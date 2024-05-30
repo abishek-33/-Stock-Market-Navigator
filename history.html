@@ -1,0 +1,78 @@
+{%extends "layout.html" %}
+{% block title %}Stock | Dashboard{% endblock %}
+{% block content %} 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    function showImage(image_name, stock_name)
+    {
+        console.log(image_name);
+        console.log(stock_name);
+        $("#stk_name").text(stock_name);
+        $('#stk_img').attr('src', image_name);
+        $("#myModal").modal('show');
+    }
+</script>
+<style>
+    .modal-body {
+        text-align: center; 
+    }
+
+    #stk_img {
+        max-width: 100%; 
+        max-height: calc(100vh - 200px); 
+    }
+</style>
+<div class="container mt-4">
+    <h3 class="text-center">History</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Stock Name</th>
+              <th>45 Days</th>
+              <th>Half Year</th>
+              <th>Next Year</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if all_data %}
+                {% for data in all_data %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{data.stock_name}}</td>
+                        <td><img src="/static/uploads/{{data.four_image}}" style="width:100px;height:100px;cursor:pointer;" onclick="showImage('/static/uploads/{{data.four_image}}', '{{data.stock_name}}')"></td>
+                        <td><img src="/static/uploads/{{data.half_image}}" style="width:100px;height:100px;cursor:pointer;" onclick="showImage('/static/uploads/{{data.half_image}}', '{{data.stock_name}}')"></td>
+                        <td><img src="/static/uploads/{{data.year_image}}" style="width:100px;height:100px;cursor:pointer;" onclick="showImage('/static/uploads/{{data.year_image}}', '{{data.stock_name}}')"></td>
+                        <td>{{data.tstamp}}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+</div>
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="stk_name"></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+  
+            <!-- Modal body -->
+            <div class="modal-body">
+                <img id="stk_img">
+            </div>
+  
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
